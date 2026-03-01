@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="padding:70px 20px; max-width:1000px; margin:auto; color:white;">
+    <h1>My Dashboard</h1>
+
+    {% if submissions %}
+        {% for submission in submissions %}
+            <div style="background:#1e293b; padding:20px; margin-bottom:15px; border-radius:12px;">
+                <h3>{{ submission.exam.name }}</h3>
+                <p>Total Score: {{ submission.total_score }}</p>
+                <a href="{% url 'submission_detail' submission.id %}">
+                    View Details
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No submissions yet.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

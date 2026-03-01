@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="padding:70px 20px; max-width:1000px; margin:auto; color:white;">
+
+    <h1 style="margin-bottom:10px;">
+        Manage Questions – {{ exam.name }}
+    </h1>
+
+    <p style="opacity:0.7; margin-bottom:30px;">
+        Total Marks (Auto Calculated): {{ total_marks }}
+    </p>
+
+    <div style="margin-bottom:30px;">
+        <a href="{% url 'add_question' exam.id %}">
+            <button class="btn-primary">
+                Add Question
+            </button>
+        </a>
+    </div>
+
+    {% if questions %}
+        {% for question in questions %}
+            <div style="
+                background:#1e293b;
+                padding:25px;
+                border-radius:16px;
+                margin-bottom:20px;
+            ">
+                <h3>{{ question.question_code }}</h3>
+                <p>Max Marks: {{ question.max_marks }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No questions added yet.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

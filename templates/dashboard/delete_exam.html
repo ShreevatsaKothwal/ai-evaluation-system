@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="min-height:80vh; display:flex; align-items:center; justify-content:center;">
+
+    <div style="
+        background:#1e293b;
+        padding:40px;
+        width:420px;
+        border-radius:20px;
+        box-shadow:0 20px 40px rgba(0,0,0,0.5);
+        color:white;
+        text-align:center;
+    ">
+
+        <h2 style="margin-bottom:15px; color:#ef4444;">
+            Delete Exam
+        </h2>
+
+        <p style="opacity:0.8; margin-bottom:30px;">
+            Are you sure you want to delete
+            <strong>{{ exam.name }}</strong>?
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div style="display:flex; gap:15px; justify-content:center;">
+
+                <a href="{% url 'configure_dashboard' %}">
+                    <button type="button" style="
+                        padding:10px 20px;
+                        border-radius:10px;
+                        border:none;
+                        background:#475569;
+                        color:white;
+                        cursor:pointer;
+                    ">
+                        Cancel
+                    </button>
+                </a>
+
+                <button type="submit" style="
+                    padding:10px 20px;
+                    border-radius:10px;
+                    border:none;
+                    background:#ef4444;
+                    color:white;
+                    font-weight:600;
+                    cursor:pointer;
+                ">
+                    Confirm Delete
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

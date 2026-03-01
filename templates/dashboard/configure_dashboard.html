@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="padding:70px 20px; max-width:1000px; margin:auto; color:white;">
+
+    <!-- HEADER -->
+    <div style="margin-bottom:40px;">
+        <h1 style="font-size:32px; margin-bottom:15px;">
+            Configuration Panel
+        </h1>
+
+        <a href="{% url 'add_exam' %}" style="text-decoration:none;">
+            <button class="btn-primary">
+                Add New Exam
+            </button>
+        </a>
+    </div>
+
+    <!-- EXAMS LIST -->
+    {% if exams %}
+        {% for exam in exams %}
+            <div style="
+                background:#1e293b;
+                padding:30px;
+                border-radius:16px;
+                margin-bottom:25px;
+                box-shadow:0 10px 25px rgba(0,0,0,0.4);
+            ">
+
+                <h3 style="margin-bottom:8px;">
+                    {{ exam.name }}
+                </h3>
+
+                <p style="opacity:0.7; margin-bottom:20px;">
+                    Total Marks: {{ exam.total_marks }}
+                </p>
+
+                <div style="display:flex; gap:12px; flex-wrap:wrap;">
+
+                    <!-- EDIT -->
+                    <a href="{% url 'edit_exam' exam.id %}" style="text-decoration:none;">
+                        <button style="
+                            padding:8px 18px;
+                            border-radius:8px;
+                            border:none;
+                            background:#3b82f6;
+                            color:white;
+                            cursor:pointer;
+                        ">
+                            Edit
+                        </button>
+                    </a>
+
+                    <!-- 🔥 MANAGE QUESTIONS (NEW) -->
+                    <a href="{% url 'manage_questions' exam.id %}" style="text-decoration:none;">
+                        <button style="
+                            padding:8px 18px;
+                            border-radius:8px;
+                            border:none;
+                            background:#8b5cf6;
+                            color:white;
+                            cursor:pointer;
+                        ">
+                            Manage Questions
+                        </button>
+                    </a>
+
+                    <!-- ANALYTICS -->
+                    <a href="{% url 'exam_dashboard' exam.id %}" style="text-decoration:none;">
+                        <button style="
+                            padding:8px 18px;
+                            border-radius:8px;
+                            border:none;
+                            background:#10b981;
+                            color:white;
+                            cursor:pointer;
+                        ">
+                            Analytics
+                        </button>
+                    </a>
+
+                    <!-- DELETE -->
+                    <a href="{% url 'delete_exam' exam.id %}" style="text-decoration:none;">
+                        <button style="
+                            padding:8px 18px;
+                            border-radius:8px;
+                            border:none;
+                            background:#ef4444;
+                            color:white;
+                            cursor:pointer;
+                        ">
+                            Delete
+                        </button>
+                    </a>
+
+                </div>
+
+            </div>
+        {% endfor %}
+    {% else %}
+        <p style="opacity:0.6;">No exams created yet.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

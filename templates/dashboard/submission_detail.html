@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="padding:40px; max-width:1000px; margin:auto; color:white;">
+
+    <!-- HEADER -->
+    <h1 style="margin-bottom:5px;">
+        {{ submission.student }} - {{ submission.exam.name }}
+    </h1>
+
+    <h2 style="margin-bottom:10px;">
+        Total Score: {{ submission.total_score }}
+    </h2>
+
+    <!-- 🔥 NEW: Navigation Button -->
+    <div style="margin-bottom:25px;">
+        <a href="{% url 'exam_dashboard' submission.exam.id %}">
+            <button class="btn-primary">
+                View Exam Analytics
+            </button>
+        </a>
+    </div>
+
+    <hr style="margin:30px 0; opacity:0.3;">
+
+    <!-- ANSWERS LOOP -->
+    {% for answer in answers %}
+        <div style="
+            background:#1e293b;
+            padding:25px;
+            border-radius:12px;
+            margin-bottom:30px;
+            box-shadow:0 8px 25px rgba(0,0,0,0.3);
+        ">
+
+            <h3 style="margin-bottom:10px;">
+                Question {{ answer.question.question_code }}
+            </h3>
+
+            <p><strong>Marks Awarded:</strong> {{ answer.marks_awarded }}</p>
+
+            <h4 style="margin-top:20px;">Extracted Text:</h4>
+            <p style="opacity:0.85; line-height:1.6;">
+                {{ answer.extracted_text }}
+            </p>
+
+            <h4 style="margin-top:20px;">Rubric Breakdown:</h4>
+            <ul>
+                {% for section, mark in answer.breakdown.items %}
+                    <li>
+                        {{ section|capfirst }} : {{ mark }}
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <h4 style="margin-top:20px;">Feedback:</h4>
+            <p style="opacity:0.9;">
+                {{ answer.feedback.overall_comment }}
+            </p>
+
+        </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

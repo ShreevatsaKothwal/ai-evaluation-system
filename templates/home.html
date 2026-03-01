@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="hero-glow"></div>
+
+    <div class="hero-content">
+        <h1>Intelligent Academic Evaluation Powered by AI</h1>
+        <p>
+            Upload answer scripts. Receive structured feedback.
+            Experience smarter academic assessment with IntelliGrade.
+        </p>
+        <a href="#exams">
+            <button class="btn-primary">Launch Evaluation</button>
+        </a>
+    </div>
+</section>
+
+<!-- EXAMS SECTION -->
+<section class="exams-section" id="exams">
+    <h2>Available Exams</h2>
+
+    <div class="exam-grid">
+        {% for exam in exams %}
+        <div class="exam-card">
+            <h3>{{ exam.name }}</h3>
+            <p>Total Marks: {{ exam.total_marks }}</p>
+
+            <a href="{% url 'submit_exam' exam.id %}">
+                <button class="btn-primary">Start</button>
+            </a>
+        </div>
+        {% empty %}
+        <p>No exams available.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="padding:80px 20px; max-width:950px; margin:auto; color:white;">
+
+    <!-- HEADER -->
+    <div style="text-align:center; margin-bottom:50px;">
+        <h1 style="font-size:34px; margin-bottom:10px;">
+            Submit {{ exam.name }}
+        </h1>
+        <p style="opacity:0.7; font-size:16px;">
+            Upload clear images of your answers. Each question is evaluated individually.
+        </p>
+    </div>
+
+    <!-- MAIN CARD -->
+    <form method="POST" enctype="multipart/form-data"
+          style="
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            padding:50px;
+            border-radius:20px;
+            box-shadow:
+                0 25px 50px rgba(0,0,0,0.5),
+                inset 0 0 0 1px rgba(255,255,255,0.05);
+          ">
+
+        {% csrf_token %}
+
+        {% for question in exam.questions.all %}
+            <div style="
+                margin-bottom:40px;
+                padding:25px;
+                border-radius:14px;
+                background: rgba(255,255,255,0.02);
+                border:1px solid rgba(255,255,255,0.05);
+            ">
+
+                <h3 style="margin-bottom:8px; font-size:20px;">
+                    Question {{ question.question_code }}
+                </h3>
+
+                <p style="opacity:0.6; margin-bottom:20px;">
+                    Maximum Marks: {{ question.max_marks }}
+                </p>
+
+                <!-- Upload Box -->
+                <label id="upload-box-{{ question.id }}" style="
+                    display:block;
+                    padding:18px;
+                    border-radius:12px;
+                    background:#0f172a;
+                    border:1px dashed #334155;
+                    text-align:center;
+                    cursor:pointer;
+                    transition: all 0.3s ease;
+                ">
+                    <span id="file-name-{{ question.id }}" style="opacity:0.7;">
+                        Click to upload answer image
+                    </span>
+
+                    <input
+                        type="file"
+                        name="question_{{ question.id }}"
+                        required
+                        style="display:none;"
+                        onchange="updateFileName(this, {{ question.id }})"
+                    >
+                </label>
+
+            </div>
+        {% endfor %}
+
+        <!-- SUBMIT BUTTON -->
+        <div style="text-align:center; margin-top:30px;">
+            <button type="submit"
+                style="
+                    padding:14px 50px;
+                    font-size:16px;
+                    font-weight:600;
+                    border:none;
+                    border-radius:12px;
+                    background: linear-gradient(135deg, #3b82f6, #2563eb);
+                    color:white;
+                    cursor:pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 10px 25px rgba(37,99,235,0.4);
+                "
+                onmouseover="this.style.transform='translateY(-2px)'"
+                onmouseout="this.style.transform='translateY(0px)'"
+            >
+                Submit Exam
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+<!-- File Preview Script -->
+<script>
+function updateFileName(input, id) {
+    const fileNameSpan = document.getElementById("file-name-" + id);
+    const uploadBox = document.getElementById("upload-box-" + id);
+
+    if (input.files.length > 0) {
+        fileNameSpan.innerText = "Selected: " + input.files[0].name + " ✅";
+        fileNameSpan.style.opacity = "1";
+        uploadBox.style.border = "1px solid #3b82f6";
+        uploadBox.style.background = "#1e293b";
+    }
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="padding:70px 20px; max-width:700px; margin:auto; color:white;">
+
+    <h1 style="font-size:30px; margin-bottom:30px;">
+        Add New Exam
+    </h1>
+
+    <div style="
+        background:#1e293b;
+        padding:40px;
+        border-radius:16px;
+        box-shadow:0 10px 25px rgba(0,0,0,0.4);
+    ">
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div style="margin-bottom:25px;">
+                <label style="display:block; margin-bottom:8px;">
+                    Exam Name
+                </label>
+                <input type="text" name="name" required
+                       style="
+                       width:100%;
+                       padding:12px;
+                       border-radius:8px;
+                       border:none;
+                       background:#0f172a;
+                       color:white;
+                       ">
+            </div>
+
+            <div style="margin-bottom:30px;">
+                <label style="display:block; margin-bottom:8px;">
+                    Total Marks
+                </label>
+                <input type="number" name="total_marks" required
+                       style="
+                       width:100%;
+                       padding:12px;
+                       border-radius:8px;
+                       border:none;
+                       background:#0f172a;
+                       color:white;
+                       ">
+            </div>
+
+            <div style="display:flex; gap:15px;">
+
+                <button type="submit"
+                        style="
+                        padding:10px 25px;
+                        border-radius:10px;
+                        border:none;
+                        background:linear-gradient(90deg,#7c3aed,#3b82f6);
+                        color:white;
+                        cursor:pointer;
+                        ">
+                    Save Exam
+                </button>
+
+                <a href="{% url 'configure_dashboard' %}">
+                    <button type="button"
+                            style="
+                            padding:10px 25px;
+                            border-radius:10px;
+                            border:none;
+                            background:#374151;
+                            color:white;
+                            cursor:pointer;
+                            ">
+                        Cancel
+                    </button>
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

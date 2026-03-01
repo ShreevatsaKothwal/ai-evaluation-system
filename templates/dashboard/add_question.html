@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="padding:70px 20px; max-width:700px; margin:auto; color:white;">
+
+    <h1>Add Question – {{ exam.name }}</h1>
+
+    <div style="
+        background:#1e293b;
+        padding:40px;
+        border-radius:16px;
+        margin-top:30px;
+    ">
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div style="margin-bottom:25px;">
+                <label>Question Code</label>
+                <input type="text" name="question_code" required
+                       style="width:100%; padding:12px; border-radius:8px; border:none; background:#0f172a; color:white;">
+            </div>
+
+            <div style="margin-bottom:25px;">
+                <label>Max Marks</label>
+                <input type="number" name="max_marks" required
+                       style="width:100%; padding:12px; border-radius:8px; border:none; background:#0f172a; color:white;">
+            </div>
+            <div style="margin-bottom:25px;">
+                <label>Rubric / Model Answer</label>
+                <textarea name="rubric" required
+                    style="width:100%; padding:12px; border-radius:8px; border:none; background:#0f172a; color:white; height:120px;">
+                </textarea>
+            </div>
+
+            <button type="submit" class="btn-primary">
+                Save Question
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

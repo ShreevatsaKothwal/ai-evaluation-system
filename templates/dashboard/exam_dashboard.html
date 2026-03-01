@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+.dashboard-container {
+    padding: 40px 60px;
+}
+
+.dashboard-title {
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 35px;
+}
+
+.stats-row {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    flex: 1;
+    min-width: 220px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(12px);
+    padding: 28px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-6px);
+    border-color: #6366f1;
+}
+
+.stat-title {
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 12px;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* 🔥 Bigger balanced chart */
+.chart-wrapper {
+    width: 100%;
+    height: 450px;
+}
+
+.chart-container {
+    background: rgba(255,255,255,0.05);
+    padding: 35px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    height: 100%;
+}
+</style>
+
+<div class="dashboard-container">
+
+    <div class="dashboard-title">
+        {{ exam.name }} Analytics Dashboard
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-title">Total Students</div>
+            <div class="stat-value">{{ total_students }}</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Average Score</div>
+            <div class="stat-value">{{ average_score }}</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Highest Score</div>
+            <div class="stat-value">{{ highest_score }}</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Pass Percentage</div>
+            <div class="stat-value">{{ pass_percentage }}%</div>
+        </div>
+    </div>
+
+    <div style="display:flex; gap:40px; flex-wrap:wrap;">
+
+    <!-- Bar Chart -->
+    <div style="flex:2; height:450px;">
+        <div class="chart-container" style="height:100%;">
+            <canvas id="scoreChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Pie Chart -->
+    <div style="flex:1; height:450px;">
+        <div class="chart-container" style="height:100%;">
+            <canvas id="passFailChart"></canvas>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const ctx = document.getElementById('scoreChart').getContext('2d');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Average', 'Highest', 'Lowest'],
+        datasets: [{
+            label: 'Scores',
+            data: [
+                {{ average_score }},
+                {{ highest_score }},
+                {{ lowest_score }}
+            ],
+            backgroundColor: [
+                'rgba(99,102,241,0.85)',
+                'rgba(16,185,129,0.85)',
+                'rgba(239,68,68,0.85)'
+            ],
+            borderRadius: 12
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+            duration: 1000,
+            easing: 'easeOutQuart'
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: "white",
+                    font: { size: 14 }
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: "white" },
+                grid: { display: false }
+            },
+            y: {
+                beginAtZero: true,
+                ticks: { color: "white" },
+                grid: { color: "rgba(255,255,255,0.06)" }
+            }
+        }
+    }
+});
+
+  // 🔵 Pass vs Fail Doughnut Chart
+const pieCtx = document.getElementById('passFailChart').getContext('2d');
+
+new Chart(pieCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Pass', 'Fail'],
+        datasets: [{
+            data: [{{ pass_count }}, {{ fail_count }}],
+            backgroundColor: [
+                'rgba(16,185,129,0.9)',   // Green
+                'rgba(239,68,68,0.9)'     // Red
+            ],
+            borderWidth: 0,
+            hoverOffset: 8
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '65%',  // 🔥 Makes center hollow (modern look)
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    color: "white",
+                    font: { size: 14 }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        let total = context.dataset.data.reduce((a, b) => a + b, 0);
+                        let value = context.raw;
+                        let percentage = total ? ((value / total) * 100).toFixed(1) : 0;
+                        return `${context.label}: ${value} (${percentage}%)`;
+                    }
+                }
+            }
+        }
+    }
+});
+</script>
+
+{% endblock %}
